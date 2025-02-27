@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(uuid()) // UUID for scalability
+  email         String   @unique
+  passwordHash  String
+  createdAt     DateTime @default(now())
+
+  images        Image[]  @relation("UserImages") // One-to-many relationship
+}
+
+model Image {
+  id          String   @id @default(uuid()) 
+  userId      String
+  s3Url       String
+  description String?
+  createdAt   DateTime @default(now())
+
+  user        User     @relation("UserImages", fields: [userId], references: [id], onDelete: Cascade)
+}
