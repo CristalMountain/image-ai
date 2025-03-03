@@ -1,14 +1,23 @@
-import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jwtService: JwtService,
+  ) {}
 
   async register(email: string, password: string) {
-    const existingUser = await this.prisma.user.findUnique({ where: { email } });
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email },
+    });
 
     if (existingUser) {
       throw new ConflictException('Email already exists');
@@ -19,7 +28,11 @@ export class AuthService {
       data: { email, passwordHash: hashedPassword },
     });
 
-    return { message: 'User registered successfully', id: newUser.id };
+    return {
+      statusCode: 201,
+      message: 'User registered successfully',
+      id: newUser.id,
+    };
   }
 
   async login(email: string, password: string) {
@@ -30,6 +43,6 @@ export class AuthService {
     }
 
     const payload = { email: user.email, sub: user.id };
-    return { access_token: this.jwtService.sign(payload) };
+    return { statusCode: 200, token: this.jwtService.sign(payload) };
   }
 }
