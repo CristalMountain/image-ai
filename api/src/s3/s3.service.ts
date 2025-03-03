@@ -2,7 +2,9 @@ import {
   S3Client,
   PutObjectCommand,
   ListObjectsCommand,
+  GetObjectCommand,
 } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { File as MulterFile } from 'multer';
@@ -71,5 +73,14 @@ export class S3Service {
       where: { id },
       select: { s3Url: true },
     });
+  }
+
+  async getPresignedUrl(fileKey: string): Promise<string> {
+    const command = new GetObjectCommand({
+      Bucket: this.bucketName,
+      Key: fileKey,
+    });
+
+    return getSignedUrl(this.s3, command, { expiresIn: 3600 }); // 1 hour
   }
 }

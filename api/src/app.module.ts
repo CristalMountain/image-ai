@@ -8,6 +8,7 @@ import { GetController } from './s3/get.controller';
 import { ImageService } from './image/image.service';
 import { ImageController } from './image/image.controller';
 import { OpenAIService } from './ai/openai.service';
+import { S3Controller } from './s3/s3.controller';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { OpenAIService } from './ai/openai.service';
     PrismaModule,
     AuthModule,
   ],
-  controllers: [UploadController, GetController, ImageController],
+  controllers: [UploadController, GetController, ImageController, S3Controller],
   providers: [S3Service, ImageService, OpenAIService],
 })
 export class AppModule {}

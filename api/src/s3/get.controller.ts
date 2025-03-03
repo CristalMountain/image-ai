@@ -25,9 +25,7 @@ export class GetController {
       return { message: 'No images found' };
     }
 
-    const imageUrls = await this.s3Service.getFiles(userId);
-
-    return { message: 'Images fetched successfully', imageUrls };
+    return { message: 'Images fetched successfully', images };
   }
 
   @UseGuards(JwtAuthGuard)
