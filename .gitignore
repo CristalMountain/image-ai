@@ -57,6 +57,12 @@ ui/dist
 ui/dist-ssr
 ui/*.local
 
+ui/.env
+ui/.env.development.local
+ui/.env.test.local
+ui/.env.production.local
+ui/.env.local
+
 # Editor directories and files
 ui/.vscode/*
 ui/!.vscode/extensions.json
