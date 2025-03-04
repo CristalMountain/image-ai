@@ -41,10 +41,10 @@ const Images: React.FC = () => {
     setUploadBtn("Uploading...");
 
     const formData = new FormData();
-    formData.append("file", selectedFile);
+    formData.append("image", selectedFile);
 
     try {
-      await API.post("/upload", formData, {
+      await API.post("/s3/image", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${sessionStorage.getItem("user") || ""}`,
@@ -66,7 +66,7 @@ const Images: React.FC = () => {
 
   const handleGetAllImages = async () => {
     try {
-      const response = await API.get("/files/all", {
+      const response = await API.get("/s3/images", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("user") || ""}`,
         },
@@ -81,7 +81,7 @@ const Images: React.FC = () => {
   const fetchPresignedUrl = async (image: Image) => {
     try {
       const path = new URL(image.s3Url).pathname.replace("/", "");
-      const { data } = await API.get(`/s3/get-image-url?filename=${path}`);
+      const { data } = await API.get(`/s3/image?filename=${path}`);
       setImageUrl(data.url);
       const img = new Image();
       img.onload = () => {
