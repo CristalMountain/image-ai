@@ -15,10 +15,4 @@ export class AuthController {
   async login(@Body() body: { email: string; password: string }) {
     return this.authService.login(body.email, body.password);
   }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
-  }
 }

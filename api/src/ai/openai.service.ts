@@ -11,8 +11,6 @@ export class OpenAIService {
 
   async generateDescription(file: any): Promise<string> {
     const base64Image = file.buffer.toString('base64');
-
-    console.log({ base64Image });
     try {
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4o-mini',
